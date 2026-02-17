@@ -1,0 +1,32 @@
+name: CD - Terraform Deploy to ECS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - run: terraform init
+        working-directory: terraform
+
+      - name: Terraform Apply
+        env:
+          TF_VAR_region: ${{ secrets.AWS_REGION }}
+          TF_VAR_image_tag: ${{ github.sha }}
+          TF_VAR_dockerhub_image: ${{ secrets.DOCKERHUB_USERNAME }}/strapi-app
+          TF_VAR_db_name: ${{ secrets.DB_NAME }}
+          TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+        run: terraform apply -auto-approve
+        working-directory: terraform
