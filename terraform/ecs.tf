@@ -19,7 +19,6 @@ resource "aws_ecs_task_definition" "strapi" {
           protocol      = "tcp"
         }
       ]
-
       environment = [
         { name = "NODE_ENV",          value = "production" },
         { name = "DATABASE_CLIENT",  value = "postgres" },
