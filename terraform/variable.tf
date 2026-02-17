@@ -12,6 +12,7 @@ variable "environment" {
   default = "prod"
   description = "Environment tag"
 }
+
 variable "dockerhub_repo" {
   type        = string
   description = "Docker Hub repo (e.g., username/strapi-app)"
@@ -38,11 +39,6 @@ variable "db_username" {
 variable "db_password" {
   type      = string
   sensitive = true
-}
-
-variable "dockerhub_image" {
-  type = string
-  default = "lavkushwaha01/strapi-app"
 }
 
 # variable "image_tag" {
