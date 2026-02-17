@@ -1,5 +1,5 @@
 resource "aws_security_group" "ecs_sg" {
-  name   = "strapi-ecs-sg"
+  name   = "strapi-ecs-sg-lav"
   vpc_id = data.aws_vpc.default.id
 
   ingress {

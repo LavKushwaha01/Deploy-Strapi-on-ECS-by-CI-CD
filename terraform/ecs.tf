@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "this" {
-  name = "strapi-cluster"
+  name = "strapi-cluster-lav"
 }
 
 resource "aws_ecs_task_definition" "strapi" {
