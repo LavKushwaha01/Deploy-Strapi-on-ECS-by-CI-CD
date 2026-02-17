@@ -4,6 +4,7 @@ resource "aws_ecs_task_definition" "strapi" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "512"
   memory                   = "1024"
+  
 
   container_definitions = jsonencode([
     {

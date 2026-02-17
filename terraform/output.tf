@@ -1,5 +1,5 @@
 output "ecs_cluster_name" {
-  value = aws_ecs_cluster.this.name
+  value = aws_ecs_task_definition.strapi.family
 }
 
 output "rds_endpoint" {
