@@ -23,6 +23,13 @@ resource "aws_ecs_task_definition" "strapi" {
       ]
 
       environment = [
+          { name = "NODE_ENV", value = "production" },
+{ name = "APP_KEYS", value = "key1,key2,key3,key4" },
+{ name = "API_TOKEN_SALT", value = "random_salt_123" },
+{ name = "ADMIN_JWT_SECRET", value = "admin_secret_123" },
+{ name = "JWT_SECRET", value = "jwt_secret_123" },
+
+
         { name = "DATABASE_CLIENT",   value = "postgres" },
         { name = "DATABASE_HOST",     value = aws_db_instance.postgres.address },
         { name = "DATABASE_PORT",     value = "5432" },
