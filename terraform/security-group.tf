@@ -1,30 +1,37 @@
-// Creating security group
+resource "aws_security_group" "ecs_sg" {
+  name   = "strapi-ecs-sg"
+  vpc_id = data.aws_vpc.default.id
 
-resource "aws_security_group" "security_group" {
-
-  dynamic "ingress" {
-    for_each = var.ports
-    iterator = port
-    content {
-      description = "Allow HTTP from anywhere"
-      from_port   = port.value
-      to_port     = port.value
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-
-  }
-
-  egress {
-    description = "Allow all outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1" # -1 signifies all protocols
+  ingress {
+    from_port   = 1337
+    to_port     = 1337
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
-output "securitygroup-detail" {
-  value = aws_security_group.security_group.id
+resource "aws_security_group" "rds_sg" {
+  name   = "strapi-rds-sg"
+  vpc_id = data.aws_vpc.default.id
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ecs_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }

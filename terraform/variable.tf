@@ -3,10 +3,6 @@ variable "key_name" {
   type = string
   default = "lav-key"
 }
-variable "ports" {
-      type = list(number)
-      default = [22, 80, 443, 1337, 5432]
-}
 variable "environment" {
   type = string
   default = "prod"
