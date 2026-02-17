@@ -16,6 +16,7 @@ variable "environment" {
 variable "dockerhub_repo" {
   type        = string
   description = "Docker Hub repo (e.g., username/strapi-app)"
+  default = "lavkushwaha01/strapi-app"
 }
 
 variable "image_tag" {
