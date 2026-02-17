@@ -19,7 +19,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t strapi:${{ github.sha }} -f Docker/Dockerfile ./Strapi
+          docker build -t strapi:${{ github.sha }} -f Docker/Dockerfile ./Strapi-lav
 
       - name: Tag Image
         run: |
