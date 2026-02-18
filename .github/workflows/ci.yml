@@ -1,4 +1,4 @@
-name: CI - Build & Push to Docker Hub
+name: CI - Build & Push to ECR
 
 on:
   push:
@@ -12,23 +12,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Login to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
-            -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Build Docker Image
-        run: |
-          docker build -t strapi:${{ github.sha }} -f docker/Dockerfile ./Strapi-lav
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Tag Image
+      - name: Build Docker image
         run: |
-          docker tag strapi:${{ github.sha }} ${{ secrets.DOCKERHUB_REPO }}:${{ github.sha }}
+          docker build -t $ECR_REPOSITORY:${{ github.sha }} -f docker/Dockerfile ./Strapi-lav
 
-      - name: Push Image to Docker Hub
+      - name: Tag Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_REPO }}:${{ github.sha }}
+          docker tag $ECR_REPOSITORY:${{ github.sha }} \
+          811738710312.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:${{ github.sha }}
 
-      - name: Save Image Tag
-        run: echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
+      - name: Push image to ECR
+        run: |
+          docker push 811738710312.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:${{ github.sha }}
 
