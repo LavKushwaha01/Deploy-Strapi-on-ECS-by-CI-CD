@@ -38,6 +38,11 @@ variable "db_password" {
   sensitive = true
 }
 
+variable "ecr_repo_url" {
+  type        = string
+  description = "ECR repository URL for Strapi image"
+}
+
 # variable "image_tag" {
 #   description = "Git commit SHA used as Docker image tag"
 #   type        = string
