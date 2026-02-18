@@ -4,6 +4,11 @@ on:
   push:
     branches: [ "master" ]
 
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: strapi-app-lav
+  AWS_ACCOUNT_ID: 811738710312
+
 jobs:
   build:
     runs-on: ubuntu-latest
