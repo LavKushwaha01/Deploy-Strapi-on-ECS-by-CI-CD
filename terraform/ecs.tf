@@ -15,9 +15,6 @@ resource "aws_ecs_task_definition" "strapi" {
   {
     name      = "strapi"
     image = "${var.ecr_repo_url}:${var.image_tag}"
-
-
-
     essential = true
 
     portMappings = [
