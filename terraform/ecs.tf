@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "strapi" {
   cpu                      = "512"
   memory                   = "1024"
 
-  execution_role_arn = data.aws_iam_role.ecs_execution_role.arn
+  execution_role_arn = "arn:aws:iam::811738710312:role/ecs_fargate_taskRole"
 
   container_definitions = jsonencode([
     {
