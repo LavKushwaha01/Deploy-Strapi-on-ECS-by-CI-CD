@@ -12,35 +12,46 @@ resource "aws_ecs_task_definition" "strapi" {
   execution_role_arn = "arn:aws:iam::811738710312:role/ecs_fargate_taskRole"
 
   container_definitions = jsonencode([
-    {
-      name      = "strapi"
-      image     = "${var.dockerhub_repo}:${var.image_tag}"
-      essential = true
+  {
+    name      = "strapi"
+    image     = "${var.dockerhub_repo}:${var.image_tag}"
+    essential = true
 
-      portMappings = [
-        {
-          containerPort = 1337
-          protocol      = "tcp"
-        }
-      ]
+    portMappings = [
+      {
+        containerPort = 1337
+        protocol      = "tcp"
+      }
+    ]
 
-      environment = [
-          { name = "NODE_ENV", value = "production" },
-{ name = "APP_KEYS", value = "key1,key2,key3,key4" },
-{ name = "API_TOKEN_SALT", value = "random_salt_123" },
-{ name = "ADMIN_JWT_SECRET", value = "admin_secret_123" },
-{ name = "JWT_SECRET", value = "jwt_secret_123" },
-
-
-        { name = "DATABASE_CLIENT",   value = "postgres" },
-        { name = "DATABASE_HOST",     value = aws_db_instance.postgres.address },
-        { name = "DATABASE_PORT",     value = "5432" },
-        { name = "DATABASE_NAME",     value = var.db_name },
-        { name = "DATABASE_USERNAME", value = var.db_username },
-        { name = "DATABASE_PASSWORD", value = var.db_password }
-      ]
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        awslogs-group         = "/ecs/strapi"
+        awslogs-region        = "us-east-1"
+        awslogs-stream-prefix = "ecs"
+      }
     }
-  ])
+
+    environment = [
+      { name = "NODE_ENV", value = "production" },
+
+      { name = "APP_KEYS", value = "aVeryLongRandomKey1,aVeryLongRandomKey2,aVeryLongRandomKey3,aVeryLongRandomKey4" },
+      { name = "API_TOKEN_SALT", value = "aVeryLongRandomSaltString1234567890" },
+      { name = "ADMIN_JWT_SECRET", value = "aVeryLongAdminJwtSecret1234567890" },
+      { name = "JWT_SECRET", value = "aVeryLongJwtSecret1234567890" },
+
+      { name = "DATABASE_CLIENT",   value = "postgres" },
+      { name = "DATABASE_HOST",     value = aws_db_instance.postgres.address },
+      { name = "DATABASE_PORT",     value = "5432" },
+      { name = "DATABASE_NAME",     value = var.db_name },
+      { name = "DATABASE_USERNAME", value = var.db_username },
+      { name = "DATABASE_PASSWORD", value = var.db_password },
+      { name = "DATABASE_SSL",      value = "false" }
+    ]
+  }
+])
+
 }
 
 resource "aws_ecs_service" "strapi" {
