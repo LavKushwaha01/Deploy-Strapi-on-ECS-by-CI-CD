@@ -67,8 +67,5 @@ resource "aws_ecs_service" "strapi" {
     assign_public_ip = true
   }
 
-  depends_on = [
-  aws_db_instance.postgres,
-  aws_cloudwatch_log_group.strapi  
-]
+  depends_on = [aws_db_instance.postgres]
 }
