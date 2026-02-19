@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "strapi" {
     logConfiguration = {
       logDriver = "awslogs"
       options = {
-        awslogs-group         = "/ecs/strapi"
+        awslogs-group         = aws_cloudwatch_log_group.strapi.name
         awslogs-region        = "us-east-1"
         awslogs-stream-prefix = "ecs"
       }
@@ -67,5 +67,8 @@ resource "aws_ecs_service" "strapi" {
     assign_public_ip = true
   }
 
-  depends_on = [aws_db_instance.postgres]
+  depends_on = [
+  aws_db_instance.postgres,
+  aws_cloudwatch_log_group.strapi  
+]
 }
