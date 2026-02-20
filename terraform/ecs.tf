@@ -63,10 +63,10 @@ resource "aws_ecs_service" "strapi" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = data.aws_subnets.default.ids
-    security_groups  = [aws_security_group.ecs_sg.id]
-    assign_public_ip = true
-  }
+  subnets          = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+  security_groups  = [aws_security_group.ecs_sg.id]
+  assign_public_ip = true
+}
    load_balancer {
     target_group_arn = aws_lb_target_group.strapi_tg.arn
     container_name   = "strapi"

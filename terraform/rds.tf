@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "strapi" {
   name       = "strapi-db-subnet-group-lav"
-  subnet_ids = data.aws_subnets.default.ids
+  subnet_ids = [aws_subnet.public_a.id, aws_subnet.public_b.id]
 }
 
 resource "aws_db_instance" "postgres" {
