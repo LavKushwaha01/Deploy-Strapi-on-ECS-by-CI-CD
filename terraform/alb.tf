@@ -1,5 +1,5 @@
 resource "aws_lb" "strapi_alb" {
-  name               = "strapi-alb"
+  name               = "strapi-alb-lav"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
@@ -11,7 +11,7 @@ resource "aws_lb" "strapi_alb" {
 }
 
 resource "aws_lb_target_group" "strapi_tg" {
-  name        = "strapi-tg"
+  name        = "strapi-tg-lav"
   port        = 1337
   protocol    = "HTTP"
   vpc_id      = data.aws_vpc.default.id
