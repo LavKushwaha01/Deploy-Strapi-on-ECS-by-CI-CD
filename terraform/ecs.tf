@@ -72,7 +72,6 @@ resource "aws_ecs_service" "strapi" {
     container_name   = "strapi"
     container_port   = 1337
   }
-
   depends_on = [
     aws_db_instance.postgres,
     aws_cloudwatch_log_group.strapi,
