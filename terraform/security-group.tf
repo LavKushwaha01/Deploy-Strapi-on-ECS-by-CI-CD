@@ -1,6 +1,6 @@
 resource "aws_security_group" "ecs_sg" {
   name   = "strapi-ecs-sg-lav"
-  vpc_id = data.aws_vpc.default.id
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port   = 1337
@@ -19,7 +19,7 @@ resource "aws_security_group" "ecs_sg" {
 
 resource "aws_security_group" "rds_sg" {
   name   = "strapi-rds-sg-lav"
-  vpc_id = data.aws_vpc.default.id
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port       = 5432
@@ -38,7 +38,7 @@ resource "aws_security_group" "rds_sg" {
 }
 resource "aws_security_group" "alb_sg" {
   name   = "strapi-alb-sg-lav"
-  vpc_id = data.aws_vpc.default.id
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port   = 80
