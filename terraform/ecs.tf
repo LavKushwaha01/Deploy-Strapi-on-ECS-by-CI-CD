@@ -11,6 +11,7 @@ resource "aws_ecs_task_definition" "strapi" {
 
   execution_role_arn = "arn:aws:iam::811738710312:role/ecs_fargate_taskRole"
 
+ 
   container_definitions = jsonencode([
   {
     name      = "strapi"
@@ -19,7 +20,7 @@ resource "aws_ecs_task_definition" "strapi" {
 
     portMappings = [
       {
-        containerPort = 1337
+        containerPort = 1337 
         protocol      = "tcp"
       }
     ]
@@ -27,7 +28,7 @@ resource "aws_ecs_task_definition" "strapi" {
     logConfiguration = {
       logDriver = "awslogs"
       options = {
-        awslogs-group         = "/ecs/strapi"
+        awslogs-group         = aws_cloudwatch_log_group.strapi.name
         awslogs-region        = "us-east-1"
         awslogs-stream-prefix = "ecs"
       }
@@ -66,6 +67,15 @@ resource "aws_ecs_service" "strapi" {
     security_groups  = [aws_security_group.ecs_sg.id]
     assign_public_ip = true
   }
+   load_balancer {
+    target_group_arn = aws_lb_target_group.strapi_tg.arn
+    container_name   = "strapi"
+    container_port   = 1337
+  }
 
-  depends_on = [aws_db_instance.postgres]
+  depends_on = [
+    aws_db_instance.postgres,
+    aws_cloudwatch_log_group.strapi,
+    aws_lb_listener.http
+  ]
 }
