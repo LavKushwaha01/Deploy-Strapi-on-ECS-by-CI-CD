@@ -1,6 +1,19 @@
 resource "aws_ecs_cluster" "this" {
   name = "strapi-cluster-lav"
 }
+resource "aws_ecs_cluster_capacity_providers" "this" {
+  cluster_name = aws_ecs_cluster.this.name
+
+  capacity_providers = [
+    "FARGATE",
+    "FARGATE_SPOT"
+  ]
+
+  default_capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 1
+  }
+}
 
 resource "aws_ecs_task_definition" "strapi" {
   family                   = "strapi-task"
@@ -60,8 +73,11 @@ resource "aws_ecs_service" "strapi" {
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.strapi.arn
   desired_count   = 1
-  launch_type     = "FARGATE"
-
+  
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 1
+  }
   network_configuration {
   subnets          = [aws_subnet.public_a.id, aws_subnet.public_b.id]
   security_groups  = [aws_security_group.ecs_sg.id]
