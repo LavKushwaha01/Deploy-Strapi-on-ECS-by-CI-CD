@@ -41,7 +41,7 @@ resource "aws_ecs_task_definition" "strapi" {
     logConfiguration = {
       logDriver = "awslogs"
       options = {
-        awslogs-group         = aws_cloudwatch_log_group.strapi.name
+        awslogs-group = data.aws_cloudwatch_log_group.strapi.name
         awslogs-region        = "us-east-1"
         awslogs-stream-prefix = "ecs"
       }
@@ -73,13 +73,13 @@ resource "aws_ecs_service" "strapi" {
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.strapi.arn
   desired_count   = 1
-  
+
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
     weight            = 1
   }
   network_configuration {
-  subnets          = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+  subnets          = data.aws_subnets.default.ids
   security_groups  = [aws_security_group.ecs_sg.id]
   assign_public_ip = true
 }
@@ -88,9 +88,9 @@ resource "aws_ecs_service" "strapi" {
     container_name   = "strapi"
     container_port   = 1337
   }
-  depends_on = [
+  depends_on = [ 
     aws_db_instance.postgres,
-    aws_cloudwatch_log_group.strapi,
+    data.aws_cloudwatch_log_group.strapi,
     aws_lb_listener.http
   ]
 }

@@ -1,9 +1,3 @@
-resource "aws_cloudwatch_log_group" "strapi" {
-  name              = "/ecs/strapi-lav"
-  retention_in_days = 7
-
-  tags = {
-    Name = "strapi-ecs-logs"
-    App  = "strapi"
-  }
+data "aws_cloudwatch_log_group" "strapi" {
+  name = "/ecs/strapi"
 }

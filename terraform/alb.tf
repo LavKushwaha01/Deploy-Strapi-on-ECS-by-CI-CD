@@ -3,10 +3,8 @@ resource "aws_lb" "strapi_alb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
-  subnets = [
-  aws_subnet.public_a.id,
-  aws_subnet.public_b.id
-]
+
+  subnets = data.aws_subnets.default.ids
 
   tags = {
     Name = "strapi-alb"
@@ -17,7 +15,7 @@ resource "aws_lb_target_group" "strapi_tg" {
   name        = "strapi-tg-lav"
   port        = 1337
   protocol    = "HTTP"
- vpc_id = aws_vpc.main.id
+  vpc_id     = data.aws_vpc.default.id
   target_type = "ip"
 
   health_check {
