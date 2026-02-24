@@ -4,14 +4,14 @@ resource "aws_lb" "strapi_alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
 
-  subnets = data.aws_subnets.default.ids
+  subnets = data.aws_subnets.alb_subnets.ids
 
   tags = {
     Name = "strapi-alb"
   }
 }
 resource "aws_lb_target_group" "blue" {
-  name     = "strapi-blue-tg"
+  name     = "strapi-blue-tg-lav"
   port     = 1337
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
@@ -29,7 +29,7 @@ resource "aws_lb_target_group" "blue" {
 
 
 resource "aws_lb_target_group" "green" {
-  name     = "strapi-green-tg"
+  name     = "strapi-green-tg-lav"
   port     = 1337
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
