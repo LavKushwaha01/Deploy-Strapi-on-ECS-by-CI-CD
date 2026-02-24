@@ -71,6 +71,7 @@ resource "aws_ecs_task_definition" "strapi" {
 resource "aws_ecs_service" "strapi" {
   name            = "strapi-service"
   cluster         = aws_ecs_cluster.this.id
+  task_definition = aws_ecs_task_definition.strapi.arn 
   deployment_controller {
   type = "CODE_DEPLOY"
 }
