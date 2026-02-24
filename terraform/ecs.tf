@@ -81,7 +81,7 @@ resource "aws_ecs_service" "strapi" {
     weight            = 1
   }
   network_configuration {
-  subnets          = data.aws_subnets.default.ids
+  subnets          = data.aws_subnets.alb_subnets.ids
   security_groups  = [aws_security_group.ecs_sg.id]
   assign_public_ip = true
 }
