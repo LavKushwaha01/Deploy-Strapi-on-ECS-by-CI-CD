@@ -71,7 +71,9 @@ resource "aws_ecs_task_definition" "strapi" {
 resource "aws_ecs_service" "strapi" {
   name            = "strapi-service"
   cluster         = aws_ecs_cluster.this.id
-  task_definition = aws_ecs_task_definition.strapi.arn
+  deployment_controller {
+  type = "CODE_DEPLOY"
+}
   desired_count   = 1
 
   capacity_provider_strategy {
@@ -84,7 +86,7 @@ resource "aws_ecs_service" "strapi" {
   assign_public_ip = true
 }
    load_balancer {
-    target_group_arn = aws_lb_target_group.strapi_tg.arn
+    target_group_arn = aws_lb_target_group.blue.arn 
     container_name   = "strapi"
     container_port   = 1337
   }

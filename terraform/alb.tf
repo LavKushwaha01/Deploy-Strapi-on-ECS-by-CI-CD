@@ -10,15 +10,14 @@ resource "aws_lb" "strapi_alb" {
     Name = "strapi-alb"
   }
 }
-
-resource "aws_lb_target_group" "strapi_tg" {
-  name        = "strapi-tg-lav"
-  port        = 1337
-  protocol    = "HTTP"
-  vpc_id     = data.aws_vpc.default.id
+resource "aws_lb_target_group" "blue" {
+  name     = "strapi-blue-tg"
+  port     = 1337
+  protocol = "HTTP"
+  vpc_id   = data.aws_vpc.default.id
   target_type = "ip"
 
-  health_check {
+   health_check {
     path                = "/"
     healthy_threshold   = 2
     unhealthy_threshold = 2
@@ -28,6 +27,25 @@ resource "aws_lb_target_group" "strapi_tg" {
   }
 }
 
+
+resource "aws_lb_target_group" "green" {
+  name     = "strapi-green-tg"
+  port     = 1337
+  protocol = "HTTP"
+  vpc_id   = data.aws_vpc.default.id
+  target_type = "ip"
+
+   health_check {
+    path                = "/"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 30
+    matcher             = "200-399"
+  }
+}
+
+
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.strapi_alb.arn
   port              = 80
@@ -35,6 +53,6 @@ resource "aws_lb_listener" "http" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.strapi_tg.arn
+    target_group_arn = aws_lb_target_group.blue.arn
   }
 }
