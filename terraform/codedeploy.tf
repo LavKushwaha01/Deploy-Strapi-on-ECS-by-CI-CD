@@ -7,7 +7,7 @@ resource "aws_codedeploy_deployment_group" "ecs" {
   app_name              = aws_codedeploy_app.ecs.name
   deployment_group_name = "strapi-deployment-group"
 
-  service_role_arn     = "arn:aws:iam::811738710312:role/ecs_fargate_taskRole"
+  service_role_arn = aws_iam_role.codedeploy_role.arn
 
   deployment_style {
     deployment_type   = "BLUE_GREEN"

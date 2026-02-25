@@ -2,7 +2,10 @@ name: CD - Terraform Destroy
 
 on:
   workflow_dispatch:
-
+   inputs:
+      confirm:
+        description: "Type DESTROY to confirm teardown"
+        required: true
 jobs:
   destroy:
     runs-on: ubuntu-latest
