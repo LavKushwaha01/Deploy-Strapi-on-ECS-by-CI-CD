@@ -9,7 +9,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: terraform 
+        working-directory: ./terraform 
 
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +23,8 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
 
       - name: Terraform Init
         run: terraform init
@@ -41,11 +43,4 @@ jobs:
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        env:
-          TF_VAR_region: ${{ secrets.AWS_REGION }}
-          TF_VAR_image_tag: ${{ github.sha }}
-          TF_VAR_ecr_repo_url: ${{ secrets.ECR_REPO_URL }}
-          TF_VAR_db_name: ${{ secrets.DB_NAME }}
-          TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
-          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
         run: terraform apply -auto-approve tfplan
