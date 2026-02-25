@@ -6,8 +6,7 @@ resource "aws_codedeploy_app" "ecs" {
 resource "aws_codedeploy_deployment_group" "ecs" {
   app_name              = aws_codedeploy_app.ecs.name
   deployment_group_name = "strapi-deployment-group"
-
- service_role_arn = "arn:aws:iam::811738710312:role/codedeploy_role"
+  service_role_arn     = aws_iam_role.codedeploy_role.arn
 
   deployment_style {
     deployment_type   = "BLUE_GREEN"
@@ -15,6 +14,12 @@ resource "aws_codedeploy_deployment_group" "ecs" {
   }
 
   blue_green_deployment_config {
+
+    deployment_ready_option {
+      action_on_timeout = "CONTINUE_DEPLOYMENT"
+      wait_time_in_minutes = 0
+    }
+
     terminate_blue_instances_on_deployment_success {
       action                           = "TERMINATE"
       termination_wait_time_in_minutes = 5
