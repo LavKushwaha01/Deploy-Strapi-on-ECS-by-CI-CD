@@ -1,4 +1,4 @@
-resource "aws_codedeploy_app" "ecs" {
+/* resource "aws_codedeploy_app" "ecs" {
   name             = "strapi-codedeploy-app-lav"
   compute_platform = "ECS"
 }
@@ -48,4 +48,4 @@ resource "aws_codedeploy_deployment_group" "ecs" {
   }
 
   deployment_config_name = "CodeDeployDefault.ECSCanary10Percent5Minutes"
-}
+}*/
