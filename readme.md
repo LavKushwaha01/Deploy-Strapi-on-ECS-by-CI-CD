@@ -1,7 +1,7 @@
-# Deploy Strapi on AWS ECS using Terraform & GitHub Actions (CI/CD)
+# Automated CI/CD Deployment to AWS ECS Using GitHub Actions, ECR, Terraform, and CodeDeploy (Blue/Green)
 ---
 
-Loom video: https://www.loom.com/share/53b1e687eab843429b164c558b96993a
+Loom video: https://www.loom.com/share/b6114941bbb54499b51f9ff5ea166b78
 
 
 This repository demonstrates how to containerize a Strapi application and deploy it on AWS ECS (Fargate) using Terraform for Infrastructure as Code and GitHub Actions for CI/CD automation.
